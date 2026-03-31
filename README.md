@@ -10,8 +10,8 @@ Implemented methods: Fermi, Fermi with AIF delay, and Model-free deconvolution
 
 ### Data Requirements
 The code uses two perfusion MRI series:
-1. Main Perfusion Scan for the myocardial signal and saturated LV signal
-2. Dilute Bolus Scan for the unsaturated LV signal
+1. Main perfusion scan for the myocardial signal and saturated LV signal
+2. Dilute bolus scan for the unsaturated LV signal
 The code is set up such that both series are in the same DICOM directory.
 
 The tool assumes:
@@ -52,9 +52,7 @@ The perfusion analysis follows these steps:
 - Manually adjust cropping coordinates around the heart:
   - `y_min, y_max = ...`
   - `x_min, x_max = ...`
-- Separate cropping is used for:
-  - main perfusion images
-  - dilute AIF series
+- Separate cropping is used for the main perfusion images and the dilute AIF series
     
 #### Step 4 – Select ROIs
 The notebook will open interactive windows to select:
@@ -101,19 +99,20 @@ The notebook produces:
   - tissue transfer function or R(t)
   - model fit vs measured myocardium signal
   - convolution relationship plots
-- Quantitative Metrics
-  - MBF Myocardial blood flow (mL/min/g)
-  - R² Fit goodness
+- Quantitative Results
+  - MBF (mL/min/g)
+  - R² fit
 
 MBF Calculation is computed from the inital value of the TTF:
 - `MBF = R(0) * 60 / 1.05`
-  - R(0) = initial residue value
+  - R(0) = initial TTF value
   - 1.05 g/mL = myocardial density
 - Units: mL/min/g
 
 ### Notes
-- ROI selection is currently manual
-- Cropping coordinates may need adjustment for new datasets
+- Cropping coordinates will need adjustment for new datasets
+- ROI selection is currently manual and uses circular regions without myocardial segmentation
+  - Skip to dual-bolus scaling if defining ROIs another way
 - The model-free method enforces:
   - non-negative residue function
   - monotonic decay constraint
